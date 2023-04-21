@@ -1,0 +1,13 @@
+const weatherData = {
+  location: 'New York, NY',
+  description: 'Cloudy',
+  temp: '63',
+  humidity: '65%',
+  wind: '5 mph'
+};
+
+document.querySelector('.weather-location').textContent = weatherData.location;
+document.querySelector('.weather-description').textContent = weatherData.description;
+document.querySelector('.weather-temp').textContent = `${weatherData.temp}°F`;
+document.querySelector('.weather-humidity').textContent = `Humidity: ${weatherData.humidity}`;
+document.querySelector('.weather-wind').textContent = `Wind: ${weatherData.wind}`;
