@@ -1,0 +1,33 @@
+/* Set the font family and text color */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Center the container and add some padding */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Style the heading elements */
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 72px;
+    margin-top: 0;
+}
+
+/* Style the background and border of the temperature */
+h2 {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    padding: 20px;
+    display: inline-block;
+}
