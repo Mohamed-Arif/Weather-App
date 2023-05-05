@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Weather App</title>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-	<h1>Welcome to the Weather App</h1>
+    <div class="container">
+        <h1>Current Temperature in London:</h1>
+        <h2>{{ temperature }}°C</h2>
+    </div>
 </body>
 </html>
