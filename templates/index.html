@@ -1,18 +1,13 @@
 <!DOCTYPE html>
-<form>
-	<label for="city">Enter a city:</label>
-	<input type="text" id="city" name="city">
-	<button type="submit">Get Weather</button>
-</form>  
 <html>
 <head>
-	<title>Weather App</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-	<div class="container">
+    <div class="container">
         <h1>Current Temperature in London:</h1>
         <h2>{{ temperature }}°C</h2>
-	</div>
+    </div>
 </body>
 </html>
