@@ -6,8 +6,47 @@
 </head>
 <body>
     <div class="container">
-        <h1>Current Temperature in London:</h1>
-        <h2>{{ temperature }}°C</h2>
+        <h1>Weather App</h1>
+        <form id="cityForm">
+            <input type="text" id="cityInput" placeholder="Enter city name" />
+            <button type="submit">Search</button>
+        </form>
+        <!-- Weather information display area -->
+        <div id="weatherInfo">
+            <h2>Current Temperature:</h2>
+            <p id="currentTemperature"></p>
+        </div>
     </div>
+
+    <!-- Add the JavaScript code here -->
+    <script>
+        const cityForm = document.getElementById('cityForm');
+        const cityInput = document.getElementById('cityInput');
+        const currentTemperature = document.getElementById('currentTemperature');
+
+        cityForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent default form submission behavior
+
+            // Make a POST request to the server with the entered city
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `cityInput=${cityInput.value}`,
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    // Update the current temperature on the page
+                    currentTemperature.textContent = `${data}°C`;
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+            // Clear the input field
+            cityInput.value = '';
+        });
+    </script>
 </body>
 </html>
