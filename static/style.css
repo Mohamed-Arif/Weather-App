@@ -1,8 +1,8 @@
 /* Set the font family and text color */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: hsl(230, 51%, 47%);
-    background-image: url("../static/ELQT5835.JPEG");
+    color: hsl(43, 72%, 53%);
+    background-image: url("../static/1483382.JPG");
     background-size: cover;
 }
 
@@ -12,6 +12,9 @@ body {
     margin: 0 auto;
     padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Style the heading elements */
@@ -20,22 +23,21 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Style the background and border of the temperature */
-h2 {
-    font-size: 62px;
-    margin-top: 0;
-    background-color: #f0f0f0;
+/* Style the background and border of the weather information boxes */
+.weather-box {
+    background-color: #e0e0e0;
     border-radius: 10px;
     border: 2px solid #ccc;
-    padding: 20px;
-    display: inline-block;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 }
 
 /* Additional styling for the temperature display */
-#currentTemperature,
-#feelsLikeTemperature {
+.weather-box p {
     font-size: 48px;
-    margin-top: 10px;
+    margin-left: 10px;
 }
 
 /* Style the form and input elements */
@@ -51,7 +53,7 @@ h2 {
 button[type="submit"] {
     padding: 10px 20px;
     font-size: 18px;
-    background-color: #1f3ac3;
+    background-color: #db762e;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -60,20 +62,14 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0c237d;
+    background-color: #9c4100;
 }
 
 /* Media queries for responsive design */
 @media (max-width: 600px) {
-    h2 {
-        font-size: 48px;
-        padding: 10px;
-    }
-
-    #currentTemperature,
-    #feelsLikeTemperature {
+    .weather-box p {
         font-size: 36px;
-        margin-top: 5px;
+        margin-left: 5px;
     }
 
     #cityInput {

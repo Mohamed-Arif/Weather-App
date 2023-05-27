@@ -17,6 +17,12 @@
             <p id="currentTemperature"></p>
             <h2>Feels Like Temperature:</h2>
             <p id="feelsLikeTemperature"></p>
+            <h2>Air Quality Index:</h2>
+            <p id="airQualityIndex"></p>
+            <h2>Sunrise:</h2>
+            <p id="sunrise"></p>
+            <h2>Sunset:</h2>
+            <p id="sunset"></p>
         </div>
     </div>
 
@@ -26,6 +32,9 @@
         const cityInput = document.getElementById('cityInput');
         const currentTemperature = document.getElementById('currentTemperature');
         const feelsLikeTemperature = document.getElementById('feelsLikeTemperature');
+        const airQualityIndex = document.getElementById('airQualityIndex');
+        const sunrise = document.getElementById('sunrise');
+        const sunset = document.getElementById('sunset');
 
         cityForm.addEventListener('submit', (e) => {
             e.preventDefault(); // Prevent default form submission behavior
@@ -40,9 +49,12 @@
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    // Update the current temperature and feels like temperature on the page
+                    // Update the weather information on the page
                     currentTemperature.textContent = `${data.currentTemperature}°C`;
                     feelsLikeTemperature.textContent = `${data.feelsLikeTemperature}°C`;
+                    airQualityIndex.textContent = data.airQualityIndex;
+                    sunrise.textContent = new Date(data.sunrise * 1000).toLocaleTimeString();
+                    sunset.textContent = new Date(data.sunset * 1000).toLocaleTimeString();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
