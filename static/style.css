@@ -32,6 +32,56 @@ h2 {
 }
 
 /* Additional styling for the temperature display */
-#currentTemperature {
+#currentTemperature,
+#feelsLikeTemperature {
     font-size: 48px;
+    margin-top: 10px;
+}
+
+/* Style the form and input elements */
+#cityForm {
+    margin-top: 20px;
+}
+
+#cityInput {
+    padding: 10px;
+    font-size: 18px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #1f3ac3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0c237d;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 600px) {
+    h2 {
+        font-size: 48px;
+        padding: 10px;
+    }
+
+    #currentTemperature,
+    #feelsLikeTemperature {
+        font-size: 36px;
+        margin-top: 5px;
+    }
+
+    #cityInput {
+        font-size: 16px;
+    }
+
+    button[type="submit"] {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
 }
