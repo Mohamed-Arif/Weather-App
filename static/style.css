@@ -1,8 +1,8 @@
 /* Set the font family and text color */
 body {
-    font-family: Arial, sans-serif;
-    color: #1f3ac3;
-    background-image: url("../static/ASCO8059.JPG");
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: hsl(230, 51%, 47%);
+    background-image: url("../static/ELQT5835.JPEG");
     background-size: cover;
 }
 
@@ -22,7 +22,7 @@ h1 {
 
 /* Style the background and border of the temperature */
 h2 {
-    font-size: 72px;
+    font-size: 62px;
     margin-top: 0;
     background-color: #f0f0f0;
     border-radius: 10px;
