@@ -14,11 +14,24 @@ def index():
         try:
             response = requests.get(weather_url)
             data = response.json()
+            
             current_temperature = data['main']['temp']
             feels_like_temperature = data['main']['feels_like']
+            
+            air_quality_index = 'N/A'  # Placeholder value
+            
+            if 'air_quality' in data:
+                air_quality_index = data['air_quality']['value']
+            
+            sunrise = data['sys']['sunrise']
+            sunset = data['sys']['sunset']
+
             return jsonify({
                 'currentTemperature': current_temperature,
-                'feelsLikeTemperature': feels_like_temperature
+                'feelsLikeTemperature': feels_like_temperature,
+                'airQualityIndex': air_quality_index,
+                'sunrise': sunrise,
+                'sunset': sunset
             })
         except KeyError:
             return 'Invalid city name or weather data not available'
@@ -29,6 +42,7 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
