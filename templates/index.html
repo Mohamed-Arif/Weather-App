@@ -13,16 +13,26 @@
         </form>
         <!-- Weather information display area -->
         <div id="weatherInfo">
-            <h2>Current Temperature:</h2>
-            <p id="currentTemperature"></p>
-            <h2>Feels Like Temperature:</h2>
-            <p id="feelsLikeTemperature"></p>
-            <h2>Air Quality Index:</h2>
-            <p id="airQualityIndex"></p>
-            <h2>Sunrise:</h2>
-            <p id="sunrise"></p>
-            <h2>Sunset:</h2>
-            <p id="sunset"></p>
+            <div class="weather-box">
+                <h2>Current Temperature:</h2>
+                <p id="currentTemperature"></p>
+            </div>
+            <div class="weather-box">
+                <h2>Feels Like Temperature:</h2>
+                <p id="feelsLikeTemperature"></p>
+            </div>
+            <div class="weather-box">
+                <h2>Air Quality Index:</h2>
+                <p id="airQualityIndex"></p>
+            </div>
+            <div class="weather-box">
+                <h2>Sunrise:</h2>
+                <p id="sunrise"></p>
+            </div>
+            <div class="weather-box">
+                <h2>Sunset:</h2>
+                <p id="sunset"></p>
+            </div>
         </div>
     </div>
 
@@ -33,8 +43,8 @@
         const currentTemperature = document.getElementById('currentTemperature');
         const feelsLikeTemperature = document.getElementById('feelsLikeTemperature');
         const airQualityIndex = document.getElementById('airQualityIndex');
-        const sunrise = document.getElementById('sunrise');
-        const sunset = document.getElementById('sunset');
+        const sunriseTime = document.getElementById('sunrise');
+        const sunsetTime = document.getElementById('sunset');
 
         cityForm.addEventListener('submit', (e) => {
             e.preventDefault(); // Prevent default form submission behavior
@@ -49,12 +59,13 @@
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    // Update the weather information on the page
+                    // Update the current temperature, feels like temperature, air quality index,
+                    // sunrise time, and sunset time on the page
                     currentTemperature.textContent = `${data.currentTemperature}°C`;
                     feelsLikeTemperature.textContent = `${data.feelsLikeTemperature}°C`;
                     airQualityIndex.textContent = data.airQualityIndex;
-                    sunrise.textContent = new Date(data.sunrise * 1000).toLocaleTimeString();
-                    sunset.textContent = new Date(data.sunset * 1000).toLocaleTimeString();
+                    sunriseTime.textContent = formatTime(data.sunriseTime);
+                    sunsetTime.textContent = formatTime(data.sunsetTime);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -63,6 +74,13 @@
             // Clear the input field
             cityInput.value = '';
         });
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp * 1000);
+            const hours = ('0' + date.getHours()).slice(-2);
+            const minutes = ('0' + date.getMinutes()).slice(-2);
+            return `${hours}:${minutes}`;
+        }
     </script>
 </body>
 </html>

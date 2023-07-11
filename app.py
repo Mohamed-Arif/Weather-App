@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 API_KEY = '7d2ccf162636befe1223b1483251a6ab'
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -14,24 +15,18 @@ def index():
         try:
             response = requests.get(weather_url)
             data = response.json()
-            
             current_temperature = data['main']['temp']
             feels_like_temperature = data['main']['feels_like']
-            
-            air_quality_index = 'N/A'  # Placeholder value
-            
-            if 'air_quality' in data:
-                air_quality_index = data['air_quality']['value']
-            
-            sunrise = data['sys']['sunrise']
-            sunset = data['sys']['sunset']
+            air_quality_index = data.get('air_quality', {}).get('index', 'N/A')
+            sunrise = data.get('sys', {}).get('sunrise', 0)
+            sunset = data.get('sys', {}).get('sunset', 0)
 
             return jsonify({
                 'currentTemperature': current_temperature,
                 'feelsLikeTemperature': feels_like_temperature,
                 'airQualityIndex': air_quality_index,
-                'sunrise': sunrise,
-                'sunset': sunset
+                'sunriseTime': sunset,  # Updated: Assign sunset to sunriseTime
+                'sunsetTime': sunrise  # Updated: Assign sunrise to sunsetTime
             })
         except KeyError:
             return 'Invalid city name or weather data not available'
@@ -40,32 +35,6 @@ def index():
 
     return render_template('index.html')
 
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-# import requests
-# from flask import Flask, render_template, request
-
-# app = Flask(__name__)
-
-# API_KEY = '7d2ccf162636befe1223b1483251a6ab'
-
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     if request.method == 'POST':
-#         city = request.form['cityInput']
-#         weather_url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
-
-#         response = requests.get(weather_url)
-#         data = response.json()
-#         current_temperature = data['main']['temp']
-
-#         return str(current_temperature)
-
-#     return render_template('index.html')
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
