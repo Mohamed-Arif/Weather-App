@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Weather App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -8,79 +10,90 @@
     <div class="container">
         <h1>Weather App</h1>
         <form id="cityForm">
-            <input type="text" id="cityInput" placeholder="Enter city name" />
+            <label for="cityInput" class="visually-hidden">City</label>
+            <input type="text" id="cityInput" placeholder="Enter city name" autocomplete="off" required />
             <button type="submit">Search</button>
         </form>
+        <p id="status" role="status" aria-live="polite"></p>
+        <h2 id="place"></h2>
         <!-- Weather information display area -->
-        <div id="weatherInfo">
+        <div id="weatherInfo" hidden>
             <div class="weather-box">
-                <h2>Current Temperature:</h2>
+                <h2>Current temperature</h2>
                 <p id="currentTemperature"></p>
             </div>
             <div class="weather-box">
-                <h2>Feels Like Temperature:</h2>
+                <h2>Feels like</h2>
                 <p id="feelsLikeTemperature"></p>
             </div>
             <div class="weather-box">
-                <h2>Air Quality Index:</h2>
+                <h2>Air quality</h2>
                 <p id="airQualityIndex"></p>
             </div>
             <div class="weather-box">
-                <h2>Sunrise:</h2>
+                <h2>Sunrise</h2>
                 <p id="sunrise"></p>
             </div>
             <div class="weather-box">
-                <h2>Sunset:</h2>
+                <h2>Sunset</h2>
                 <p id="sunset"></p>
             </div>
         </div>
     </div>
 
-    <!-- Add the JavaScript code here -->
     <script>
         const cityForm = document.getElementById('cityForm');
         const cityInput = document.getElementById('cityInput');
-        const currentTemperature = document.getElementById('currentTemperature');
-        const feelsLikeTemperature = document.getElementById('feelsLikeTemperature');
-        const airQualityIndex = document.getElementById('airQualityIndex');
-        const sunriseTime = document.getElementById('sunrise');
-        const sunsetTime = document.getElementById('sunset');
+        const statusEl = document.getElementById('status');
+        const place = document.getElementById('place');
+        const weatherInfo = document.getElementById('weatherInfo');
+        const els = {
+            currentTemperature: document.getElementById('currentTemperature'),
+            feelsLikeTemperature: document.getElementById('feelsLikeTemperature'),
+            airQualityIndex: document.getElementById('airQualityIndex'),
+            sunrise: document.getElementById('sunrise'),
+            sunset: document.getElementById('sunset'),
+        };
+
+        // Show a time in the city's own timezone, not the visitor's
+        function formatTime(unixSeconds, offsetSeconds) {
+            if (!unixSeconds) return '—';
+            const d = new Date((unixSeconds + offsetSeconds) * 1000);
+            return `${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+        }
+
+        async function search(city) {
+            statusEl.textContent = 'Loading…';
+            try {
+                const response = await fetch('/weather', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ cityInput: city }),
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Something went wrong.');
+
+                place.textContent = `${data.city}${data.country ? ', ' + data.country : ''}${data.description ? ' · ' + data.description : ''}`;
+                els.currentTemperature.textContent = `${data.currentTemperature}°C`;
+                els.feelsLikeTemperature.textContent = `${data.feelsLikeTemperature}°C`;
+                els.airQualityIndex.textContent = data.airQualityIndex ? `${data.airQualityIndex} · ${data.airQualityLabel}` : 'Not available';
+                els.sunrise.textContent = formatTime(data.sunriseTime, data.timezoneOffset);
+                els.sunset.textContent = formatTime(data.sunsetTime, data.timezoneOffset);
+                weatherInfo.hidden = false;
+                statusEl.textContent = '';
+            } catch (err) {
+                statusEl.textContent = err.message === 'Failed to fetch' ? 'Couldn’t reach the server.' : err.message;
+            }
+        }
 
         cityForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Prevent default form submission behavior
-
-            // Make a POST request to the server with the entered city
-            fetch('/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `cityInput=${cityInput.value}`,
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    // Update the current temperature, feels like temperature, air quality index,
-                    // sunrise time, and sunset time on the page
-                    currentTemperature.textContent = `${data.currentTemperature}°C`;
-                    feelsLikeTemperature.textContent = `${data.feelsLikeTemperature}°C`;
-                    airQualityIndex.textContent = data.airQualityIndex;
-                    sunriseTime.textContent = formatTime(data.sunriseTime);
-                    sunsetTime.textContent = formatTime(data.sunsetTime);
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-
-            // Clear the input field
+            e.preventDefault();
+            const city = cityInput.value.trim();
+            if (city) search(city);
             cityInput.value = '';
         });
 
-        function formatTime(timestamp) {
-            const date = new Date(timestamp * 1000);
-            const hours = ('0' + date.getHours()).slice(-2);
-            const minutes = ('0' + date.getMinutes()).slice(-2);
-            return `${hours}:${minutes}`;
-        }
+        search({{ default_city | tojson }});
     </script>
 </body>
 </html>

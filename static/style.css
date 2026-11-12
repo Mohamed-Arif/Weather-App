@@ -2,7 +2,11 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: hsl(43, 72%, 53%);
-    background-image: url("../static/1483382.JPG");
+    background-image: url("1483382.jpg");
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    min-height: 100vh;
     background-size: cover;
 }
 
@@ -32,6 +36,17 @@ h1 {
     margin-bottom: 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(520px, 100%);
+    box-sizing: border-box;
+    color: #222; /* dark text on the light box, readable */
+}
+
+.weather-box h2 {
+    font-size: 20px;
+    margin: 0;
+    text-align: left;
 }
 
 /* Additional styling for the temperature display */
@@ -80,4 +95,26 @@ button[type="submit"]:hover {
         padding: 8px 16px;
         font-size: 16px;
     }
+}
+
+/* Status line and place name sit on the photo, so give them a backing */
+#status:not(:empty), #place:not(:empty) {
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
+
+#place {
+    font-size: 22px;
+    text-transform: capitalize;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
 }

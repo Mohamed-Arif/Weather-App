@@ -1,47 +1,49 @@
 # Weather App
 
-The Weather App is a simple web application that displays the current temperature and forecast for a specific city. It retrieves weather data from the OpenWeatherMap API and presents it in a user-friendly format.
+A small Flask web app that shows the current weather for any city, using the [OpenWeatherMap](https://openweathermap.org/) API.
 
 ## Features
 
-- Displays the current temperature in Celsius for a default city (London).
-- Allows users to search for weather information in different cities.
-- Shows the forecast for the next day.
-- Stylish user interface with a background image and custom styling.
+- Search any city by name; the page opens on a default city (London unless you change it)
+- Current temperature and "feels like" temperature in °C, plus a short description (e.g. *haze*)
+- Air quality index from 1 (Good) to 5 (Very poor), from OpenWeatherMap's air pollution data
+- Sunrise and sunset in the **city's own local time**
+- Clear messages for unknown cities, network problems or a missing API key
 
-## Prerequisites
+## Setup
 
-To run the Weather App, you need to have the following:
+Needs Python 3.8 or newer and a free OpenWeatherMap API key ([sign up here](https://home.openweathermap.org/users/sign_up)). New keys can take an hour or two to start working.
 
-- Python 3 installed on your machine.
-- Flask library installed. You can install it by running `pip install flask`.
-- An OpenWeatherMap API key. You can sign up for a free API key on the [OpenWeatherMap website](https://openweathermap.org/) and replace the `API_KEY` variable in `app.py` with your key.
+```bash
+git clone https://github.com/Mohamed-Arif/Weather-App.git
+cd Weather-App
+pip install -r requirements.txt
+```
 
-## Installation and Usage
+Copy `.env.example` to `.env` and put your key in it:
 
-1. Clone the repository to your local machine or download the source code.
-2. Open a terminal or command prompt and navigate to the project directory.
-3. Install the required dependencies by running `pip install -r requirements.txt`.
-4. Set your OpenWeatherMap API key by replacing the `API_KEY` variable in `app.py` with your key.
-5. Start the Flask development server by running `python app.py`.
-6. Open a web browser and enter `http://localhost:5000` in the address bar.
-7. The Weather App should now be running, and you can view the weather information for the default city or search for different cities.
+```
+OPENWEATHER_API_KEY=your-key-here
+DEFAULT_CITY=London
+```
 
-## Customization
+`.env` is in `.gitignore`, so your key never ends up on GitHub. You can also set `OPENWEATHER_API_KEY` as an ordinary environment variable instead.
 
-You can customize the Weather App by modifying the following files:
+## Run
 
-- `app.py`: Update the default city or modify the API endpoints for different weather data.
-- `index.html`: Adjust the HTML structure and layout of the web page.
-- `style.css`: Modify the CSS styles to change the appearance of the app.
+```bash
+python app.py
+```
 
-Feel free to experiment and make the app your own!
+Then open http://localhost:5000.
 
-## Contributing
+For development with auto-reload and error pages, set `FLASK_DEBUG=1` first. Leave it off anywhere other people can reach the app.
 
-Contributions to the Weather App are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the GitHub repository.
+## How it works
 
-## License
+- `app.py` serves the page and a `POST /weather` endpoint. It calls OpenWeatherMap's current weather API, then the air pollution API using the city's coordinates, and returns one JSON object.
+- `templates/index.html` sends the search and fills in the page. Times are converted using the city's UTC offset from the API, so sunrise in Tokyo shows Tokyo time wherever you are.
 
-This project is licensed under the [MIT License](LICENSE).
+## Licence
 
+MIT. See [LICENSE](LICENSE).
