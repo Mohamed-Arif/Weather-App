@@ -27,7 +27,6 @@ def index():
     return render_template("index.html", default_city=os.environ.get("DEFAULT_CITY", "London"))
 
 
-@app.route("/", methods=["POST"])
 @app.route("/weather", methods=["POST"])
 def weather():
     if not API_KEY:
